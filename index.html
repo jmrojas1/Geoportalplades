@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		
+		<title>Geoportal Fundación Plades Frutillar</title>
+		
+		<style>
+		body {
+			padding: 0;
+			margin: 0;
+		}
+		html, body, #map {
+			height: 100%;
+			width: 100vw;
+			font-family: 'nowregular', NowRegular, sans-serif;
+			font-weight: normal; 
+			font-style: normal;
+			font-size: 0.95em;
+		}
+		.leyenda {
+			padding: 6px 8px;
+			background-color: rgba(255,255,255,0.8);
+			box-shadow: 0 0 15px rgba(0,0,0,0.2);
+			border-radius: 5px;
+		}
+		.leyenda i {
+			width: 18px;
+			height: 18px;
+			float: left;
+			margin-right: 8px;
+			opacity: 1;
+			border-radius: 3px;
+		}
+		div.leyenda.leaflet-control br {
+		clear: both;
+		</style>
+	
+		<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+			integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+			crossorigin=""></script>
+			
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.2/tabletop.min.js"></script>
+				
+		<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
+		
+		<script src="js/L.Control.Basemaps-min.js"></script>
+		
+		<script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+		
+		<script src="src/L.Control.Sidebar.js"></script>
+		
+		<script src="src/leaflet.groupedlayercontrol.js"></script>
+				
+		
+		<link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/now" type="text/css"/>
+		
+		<link rel="stylesheet" href="css/fuente.css" type="text/css" charset="utf-8"/>
+		
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous"/>
+		
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+			integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+			crossorigin=""/>
+			
+		<link rel='stylesheet' href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css'/>		
+			
+		<link rel="stylesheet" href="css/L.Control.Basemaps.css" type="text/css"/>
+		
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css"/>
+		
+		<link rel="stylesheet" href="src/L.Control.Sidebar.css"/>
+		
+		<link rel="stylesheet" href="src/leaflet.groupedlayercontrol.css"/>
+				
+	</head>		
+			
+	<body>
+		<div id="map"></div>
+		
+		<div id="sidebar"></div>
+		
+		<script> 
+		var map = L.map(
+			"map",
+			{maxBounds:[
+				[-40.235117, -71.627793],
+				[-41.922385, -74.188256]
+			]}
+		).setView([-41.125433159000146, -73.03397655487062], 14);
+					
+		var basemaps = [
+			
+			L.tileLayer(
+				"https://{s}.tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png?apikey=1dcdd06edddc4572ae0feac62124665f",
+				{attribution: "Maps <a href=https://www.thunderforest.com/>&copy;Thunderforest</a>, Data <a href=https://www.openstreetmap.org/copyright>&copy;OpenStreetMap</a>, autor: <a href=mailto:jmrojas1@uc.cl>José Miguel Rojas</a>", 
+				label: "Thunderforest Mobile Atlas"}
+			),
+							
+			L.tileLayer(
+				"https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+				{attribution: "<a href=https://www.mapbox.com/about/maps/>&copy;Mapbox</a>, <a href=https://www.openstreetmap.org/copyright>&copy;OpenStreetMap</a>, <a href=https://www.mapbox.com/map-feedback/>Improve this map</a>, <a href=https://www.digitalglobe.com/>&copy;DigitalGlobe</a>, Autor: <a href=mailto:jmrojas1@uc.cl>José Miguel Rojas</a>", 
+				id: "satellite-streets-v9", 
+				accessToken: "pk.eyJ1Ijoiam1yb2phcyIsImEiOiJjanQ1cnM5OGswNzhnNGFxZjhkZ2d2c2RoIn0.eYoKy2rUlR7RfdcaZi9Zww", 
+				label: "Mapbox Satellite-Streets"}
+			),
+				
+			L.tileLayer(
+				"https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+				{attribution: "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community, Autor: <a href=mailto:jmrojas1@uc.cl>José Miguel Rojas</a>",
+				label: "Esri World Topo Map"}
+			),
+
+			L.tileLayer(
+				"https://maps.tilehosting.com/styles/streets/{z}/{x}/{y}.png?key=xrAaQ9HC16nErqjrnVpi",
+				{attribution: "<a href=https://www.maptiler.com/copyright>&copy;Maptiler</a>, <a href=https://www.openstreetmap.org/copyright>&copy;OpenStreetMap</a>, Autor: <a href=mailto:jmrojas1@uc.cl>José Miguel Rojas</a>", 
+				label: "Maptiler Streets"}
+			),
+		];
+		
+		map.addControl(L.control.basemaps({
+			basemaps: basemaps,
+				tileX: 0,  
+				tileY: 1,  
+				tileZ: 1   
+		}).setPosition("bottomleft"));
+		</script>
+
+		<script> map.addControl(new L.Control.Fullscreen());</script>
+	
+		<script>
+		L.control.scale({
+			imperial: false
+		}).addTo(map);
+		</script>
+		
+	<script> 
+		L.easyButton("fas fa-map-marked-alt", function (){window.open('http://geojson.io', '_blank'); 
+		}).addTo(map).setPosition("topleft"); 
+		</script>
+	
+	
+		<script src="js/FrutillarSectoresUrbanos.js"></script>
+		<script src="js/Puntos.js"></script>
+		<script src="js/Lineas.js"></script>
+		<script src="js/Poligonos.js"></script>
+		
+		<script>
+		map.createPane("PolygonsPane");
+		map.createPane("LinesPane");
+		map.createPane("PointsPane");
+		</script>
+	
+		
+		<script>
+		var vyt = new L.featureGroup().addTo(map);
+		var av = new L.featureGroup().addTo(map);
+		var eqycc = new L.featureGroup().addTo(map);
+		var recbar = new L.featureGroup().addTo(map);
+
+		var glybar = new L.featureGroup().addTo(map);
+
+		var prymun = new L.featureGroup().addTo(map);
+
+		var ctrpld = new L.featureGroup().addTo(map);
+
+		var segpub = new L.featureGroup();
+		var redelec = new L.featureGroup();
+		var solsan = new L.featureGroup();
+		var apr = new L.featureGroup();
+		var faep = new L.featureGroup();
+		var fndr = new L.featureGroup();
+		var fril = new L.featureGroup();
+		var pmu = new L.featureGroup();
+		var vivmun = new L.featureGroup();
+		var posib = new L.featureGroup();
+		var otros = new L.featureGroup();
+
+		var urb = new L.featureGroup();
+		
+		var groupedOverlays = {
+			"Plan Maestro 2013-2030": {
+				"<small>Vialidad y transporte</small>": vyt,
+				"<small>Áreas verdes</small>": av,
+				"<small>Equipamiento social y centro cívico</small>": eqycc,
+				"<small>Recuperación de barrios": recbar
+			},
+			"Más de Plades": {
+				"<small>Gestión local y Barrios</small>": glybar,
+				"<small>Convenio municipal 2019-2020</small>": prymun,
+				"<small>Centro Plades</small>": ctrpld
+			},
+			"Municipalidad": {
+				"<small>Terrenos vivienda/municipales</small>": vivmun,
+				"<small>Seguridad pública</small>": segpub,
+				"<small>Red eléctrica</small>": redelec,
+				"<small>Soluciones sanitarias</small>": solsan,
+				"<small>Agua potable rural (APR)</small>": apr,
+				"<small>Apoyo educación pública (FAEP)</small>": faep,
+				"<small>Desarrollo regional (FNDR)</small>": fndr,
+				"<small>Iniciativa local (FRIL)</small>": fril,
+				"<small>Mejoramiento urbano (PMU)</small>": pmu,
+				"<small>Posibles proyectos</small>": posib,
+				"<small>Otros proyectos</small>": otros
+			},
+			"Sectores urbanos":{
+				"": urb
+			}
+		};
+				
+		var options = {
+			groupCheckboxes: ["Plan Maestro 2013-2030", "Más de Plades", "Municipalidad", "Sectores urbanos"]
+		};
+
+		L.control.groupedLayers(null, groupedOverlays, options).addTo(map).setPosition("topright");
+		</script>
+	
+
+		<script>
+		var leyenda = L.control({position: "topright"});
+		
+		function showDisclaimer() {
+			var div = document.getElementById("leyenda")
+			div.innerHTML = '<b>Leyenda</b><br>' +
+				'Origen de proyecto:<br>' +
+				'<b>Plades</b><br>' +
+				'<i style="background-color: #d76780">' + 
+				'</i><small>Plan Maestro Plades</small><br>' +
+				'<i style="background-color: #50a6b7">' + 
+				'</i><small>Gestión local y barrios</small><br>' +
+				'<i style="background-color: #dbc85e">' + 
+				'</i><small>Proyectos convenio municipal</small><br>' +
+				'<i style="background-color: #9bbe6b">' + 
+				'</i><small>Centro Plades</small><br>' +
+				'<i style="background-color: #ff9f71"></i>'+'<b>Municipal</b><br>';
+		}
+
+		function hideDisclaimer() {
+			var div = document.getElementById("leyenda")
+			div.innerHTML = "<h3>Leyenda</h3>";
+		}
+
+		leyenda.onAdd = function(map) {
+			var div = L.DomUtil.create("div", "leyenda"); 
+			div.innerHTML = '<b>Leyenda</b><br>' +
+				'Origen de proyecto:<br>' +
+				'<b>Plades</b><br>' +
+				'<i style="background-color: #d76780">' + 
+				'</i><small>Plan Maestro Plades</small><br>' +
+				'<i style="background-color: #50a6b7">' + 
+				'</i><small>Gestión local y barrios</small><br>' +
+				'<i style="background-color: #dbc85e">' + 
+				'</i><small>Proyectos convenio municipal</small><br>' +
+				'<i style="background-color: #9bbe6b">' + 
+				'</i><small>Centro Plades</small><br>' +
+				'<i style="background-color: #ff9f71"></i>'+'<b>Municipal</b><br>';
+			
+			if (L.Browser.touch){
+				div.setAttribute("ontouchstart", "showDisclaimer()");
+			}
+				div.setAttribute("onmouseenter", "showDisclaimer()");
+			
+			
+			if (L.Browser.touch){
+				div.setAttribute("ontouchend", "hideDisclaimer()");
+			}
+				div.setAttribute("onmouseleave", "hideDisclaimer()");
+			
+			div.id = "leyenda"
+		
+		return div;
+		};
+
+		leyenda.addTo(map).setPosition("bottomright");
+		</script>
+		
+		<script>
+		var sidebar = L.control.sidebar("sidebar", {
+			closeButton: true,
+			position: "left"}
+		);
+		map.addControl(sidebar);
+		
+		map.on("click", function () {
+			sidebar.hide();
+		})			
+		</script>
+		
+	</body>
+ 
+</html>

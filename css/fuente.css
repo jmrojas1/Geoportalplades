@@ -1,0 +1,11 @@
+@font-face {
+	font-family: 'nowregular';
+	src: url('../css/now-regular-webfont.eot');
+	src: url('../css/now-regular-webfont.eot?#iefix') format('embedded-opentype'),
+	url('../css/now-regular-webfont.woff2') format('woff2'),
+	url('../css/now-regular-webfont.woff') format('woff'),
+	url('../css/now-regular-webfont.ttf') format('truetype'),
+	url('../css/now-regular-webfont.svg#nowregular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
