@@ -10,13 +10,13 @@ function init() {
 	 
 function addPoints (results) {
 	
-	var data = results.data
-	var row = []
+	var data = results.data;
+	var row = [];
 
 	var points = {
 	"type": "FeatureCollection",
 	"features": []
-	}
+	};
 	
 	for (var row in data){
 		
