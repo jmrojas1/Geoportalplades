@@ -5,12 +5,12 @@ function init() {
          download: true,
          header: true,
          complete: addPoints
-	})
+	});
 }
 	 
 function addPoints (results) {
 	
-	var data = results.data
+	var data = results.data;
 
 	var points = {
 	"type": "FeatureCollection",
@@ -49,7 +49,7 @@ function addPoints (results) {
 					case "Plan Maestro Plades": return L.circleMarker (coords, {
 						color: "#1f140f",
 						weight: 1,
-						radius: 8, 						
+						radius: 8,
 						fillColor: "#d76780",
 						pane: "PointsPane"});
 					case "Gestión local y barrios": return L.circleMarker (coords, {
@@ -83,9 +83,9 @@ function addPoints (results) {
 				layer.on({click: openSidebar});
 				function openSidebar(e){
 					sidebar.show();
-					{sidebar.setContent("<h3>"+"<a href="+Feature.properties.Hipervinculo+" target=_blank>"+Feature.properties.Nombre+"</a></h3>"+"<img src = "+Feature.properties.Foto+" width=100%>"+"<p>"+Feature.properties.Descripcion+"</p>"+"<ul>"+"<li><b>Instituci&oacute;n ejecutora:&nbsp;</b>"+Feature.properties.Institucionejecutora+"</li>"+"<li><b>Programa o Fondo:&nbsp;</b>"+Feature.properties.ProgramaoFondo+"</li>"+"<li><b>Estado:&nbsp;</b>"+Feature.properties.Estado+"</li>"+"<li><b>Fecha inicio:&nbsp;</b>"+Feature.properties.Fechainicio+"</li>"+"<li><b>Fecha t&eacute;rmino:&nbsp;</b>"+Feature.properties.Fechatermino+"</li>"+"<li><b>Beneficiarios:&nbsp;</b>"+Feature.properties.Beneficiarios+"</li>"+"<li><b>Direcci&oacute;n:&nbsp;</b>"+Feature.properties.Direccion+"</li>"+"</ul>")
+					{sidebar.setContent("<h3>"+"<a href="+Feature.properties.Hipervinculo+" target=_blank>"+Feature.properties.Nombre+"</a></h3>"+"<img src = "+Feature.properties.Foto+" width=100%>"+"<p>"+Feature.properties.Descripcion+"</p>"+"<ul>"+"<li><b>Instituci&oacute;n ejecutora:&nbsp;</b>"+Feature.properties.Institucionejecutora+"</li>"+"<li><b>Programa o Fondo:&nbsp;</b>"+Feature.properties.ProgramaoFondo+"</li>"+"<li><b>Estado:&nbsp;</b>"+Feature.properties.Estado+"</li>"+"<li><b>Fecha inicio:&nbsp;</b>"+Feature.properties.Fechainicio+"</li>"+"<li><b>Fecha t&eacute;rmino:&nbsp;</b>"+Feature.properties.Fechatermino+"</li>"+"<li><b>Beneficiarios:&nbsp;</b>"+Feature.properties.Beneficiarios+"</li>"+"<li><b>Direcci&oacute;n:&nbsp;</b>"+Feature.properties.Direccion+"</li>"+"</ul>");
 					}
-				};		
+				}		
 				switch (Feature.properties.Categoria){
 					case "Vialidad y transporte": return vyt.addLayer(layer);
 					case "Áreas verdes": return av.addLayer(layer);
@@ -105,10 +105,10 @@ function addPoints (results) {
 					case "Terrenos vivienda/municipales": return vivmun.addLayer(layer);
 					case "Posibles proyectos": return posib.addLayer(layer);
 					case "Otros proyectos": return otros.addLayer(layer);
-				};
+				}
 			}
-		})
+		});
 	console.log(results);  
 }
 
-window.addEventListener('DOMContentLoaded', init)
+window.addEventListener('DOMContentLoaded', init);
