@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 	<head>
-	
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 		
@@ -36,6 +35,7 @@
 		}
 		div.leyenda.leaflet-control br {
 		clear: both;
+		}
 		</style>
 	
 		<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
@@ -44,9 +44,9 @@
 			
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.2/tabletop.min.js"></script>
+		<script  type="text/javascript" src="papaparse.min.js"></script>
 				
-		<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
+		<script src="https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js"></script>
 		
 		<script src="js/L.Control.Basemaps-min.js"></script>
 		
@@ -67,7 +67,7 @@
 			integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
 			crossorigin=""/>
 			
-		<link rel='stylesheet' href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css'/>		
+		<link rel="stylesheet" href="https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css"/>
 			
 		<link rel="stylesheet" href="css/L.Control.Basemaps.css" type="text/css"/>
 		
@@ -281,8 +281,8 @@
 		<script>
 		var sidebar = L.control.sidebar("sidebar", {
 			closeButton: true,
-			position: "left"}
-		);
+			position: "left"
+		});
 		map.addControl(sidebar);
 		
 		map.on("click", function () {
