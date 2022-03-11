@@ -1,23 +1,5 @@
 var sheetsUrlFrutillarUrbanSections = "https://docs.google.com/spreadsheets/d/1-IzvBnyjVrnNsiQfF_mDd-0FCfGidFnXMQKt76goPts/pub?gid=0&single=true&output=csv";
 
-function init() {
-	Papa.parse(sheetsUrlFrutillarUrbanSections, {
-		download: true,
-		header: true,
-		skipEmptyLines: true,
-		complete: function (frutillarUrbanSectorsResults) {
-			mapSheetData(frutillarUrbanSectorsResults.data)
-		}
-	})
-}
-
-
-function mapSheetData(sheetData) {
-	sheetData.map((data, index) => {
-		data.geometry ? addPolygonssectoresurbanos(data) : delete data
-	})
-}
-
 function addPolygonssectoresurbanos(data) {
 
 	var frutillarUrbanSectorsCoordinates = JSON.parse(data.geometry);
@@ -54,6 +36,21 @@ function addPolygonssectoresurbanos(data) {
 				"<h3>" + Feature.properties.Nombre + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>" + "<img src=" + Feature.properties.Foto + " width=100%>");
 		}
 	}).addTo(urb);
+}
+
+function init() {
+	Papa.parse(sheetsUrlFrutillarUrbanSections, {
+		download: true,
+		header: true,
+		skipEmptyLines: true,
+		complete: function (frutillarUrbanSectorsResults) {
+			var frutillaraUrbanSectorData = frutillarUrbanSectorsResults.data
+
+			frutillaraUrbanSectorData.map((data, index) => {
+				data.geometry ? addPolygonssectoresurbanos(data) : frutillaraUrbanSectorData.splice(index, 1)
+			})
+		}
+	})
 }
 
 window.addEventListener('DOMContentLoaded', init)

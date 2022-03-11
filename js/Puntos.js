@@ -1,30 +1,8 @@
 var sheetsUrlPoints = "https://docs.google.com/spreadsheets/d/1ivSOvLzHI8z7hG0KqPcmTdHr2kJ7iZ2S3md-ruGHDMQ/pub?gid=0&single=true&output=csv"
 
-function init() {
-	Papa.parse(sheetsUrlPoints, {
-		download: true,
-		header: true,
-		skipEmptyLines: true,
-		complete: function (pointsResults) {
-			mapSheetData(pointsResults.data)
-		}
-	})
-}
-
-function mapSheetData(sheetData) {
-	sheetData.map((data, index) => {
-		data.geometry ? addPoints(data) : delete data
-	})
-}
-
 function addPoints(data) {
 
 	var pointsCoordinates = JSON.parse(data.geometry)
-
-	
-	if (!pointsCoordinates) {
-		console.log(data)
-	}
 
 	var points = {
 		"type": "FeatureCollection",
@@ -137,6 +115,22 @@ function addPoints(data) {
 			};
 		}
 	});
+}
+
+
+function init() {
+	Papa.parse(sheetsUrlPoints, {
+		download: true,
+		header: true,
+		skipEmptyLines: true,
+		complete: function (pointsResults) {
+			var pointsData = pointsResults.data
+
+			pointsData.map((data, index) => {
+				data.geometry ? addPoints(data) : pointsData.splice(index, 1)
+			})
+		}
+	})
 }
 
 window.addEventListener('DOMContentLoaded', init)

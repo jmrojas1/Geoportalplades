@@ -1,28 +1,8 @@
 var sheetsUrlLineas = "https://docs.google.com/spreadsheets/d/1JQUTHYFaVHT02ijiZ1O2GJWT6N14HlHhnRLLaa7gTSQ/pub?gid=0&single=true&output=csv"
 
-function init() {
-	Papa.parse(sheetsUrlLineas, {
-		download: true,
-		header: true,
-		skipEmptyLines: true,
-		complete: function (lineResults) {
-			mapSheetData(lineResults.data)
-		}
-	})
-}
-
-function mapSheetData(sheetData) {
-	sheetData.map((data, index) => {
-		data.geometry ? addLines(data) : delete data
-	})
-}
-
 function addLines(data) {
-	
+
 	var lineCoordinates = JSON.parse(data.geometry);
-	if (!lineCoordinates) {
-		console.log(data)
-	}
 
 	var lines = {
 		"type": "FeatureCollection",
@@ -147,6 +127,22 @@ function addLines(data) {
 			};
 		}
 	});
+}
+
+
+function init() {
+	Papa.parse(sheetsUrlLineas, {
+		download: true,
+		header: true,
+		skipEmptyLines: true,
+		complete: function (lineResults) {
+			var linesData = lineResults.data
+
+			linesData.map((data, index) => {
+				data.geometry ? addLines(data) : linesData.splice(index, 1)
+			})
+		}
+	})
 }
 
 window.addEventListener('DOMContentLoaded', init)

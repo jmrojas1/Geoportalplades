@@ -1,31 +1,9 @@
 var sheetsUrlPolygons = "https://docs.google.com/spreadsheets/d/1c9hQIF4pDICQnuHlJ_u56ZEsdHsN351NFUu26gmgjRU/pub?gid=0&single=true&output=csv";
 
-function init() {
-	Papa.parse(sheetsUrlPolygons, {
-		download: true,
-		header: true,
-		skipEmptyLines: true,
-		complete: function (polygonsResults) {
-			mapSheetData(polygonsResults.data)
-		}
-	})
-}
-
-function mapSheetData(sheetData) {
-	sheetData.map((data, index) => {
-		// data.geometry ? addPolygons(data) : data.geometry.splice(index, 1)
-		data.geometry ? addPolygons(data) : delete data
-	})
-}
-
 function addPolygons(data) {
 	
 	var polygonCoordinates = JSON.parse(data.geometry);
 
-	
-	if (!polygonCoordinates) {
-		console.log(data)
-	}
 	var polygons = {
 		"type": "FeatureCollection",
 		"features": []
@@ -146,6 +124,22 @@ function addPolygons(data) {
 			};
 		}
 	});
+}
+
+
+function init() {
+	Papa.parse(sheetsUrlPolygons, {
+		download: true,
+		header: true,
+		skipEmptyLines: true,
+		complete: function (polygonsResults) {
+			var polygonsData = polygonsResults.data
+			
+			polygonsData.map((data, index) => {
+				data.geometry ? addPolygons(data) : linesData.splice(index, 1)
+			})
+		}
+	})
 }
 
 window.addEventListener('DOMContentLoaded', init)
